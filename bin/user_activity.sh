@@ -31,19 +31,20 @@ usage_exit() {
 
 param="$1"
 shift
+[ ! "$param" ] && usage_exit
 
 if [ $# = 0 ]; then
   this_month=`date +%Y-%m`
   files="$ds_log_path.$this_month*"
-  msg="Using default files: $files"
+  files_msg="Using default files: $files"
 else
   files=$@
-  msg=""
+  files_msg=""
 fi
 
 # Describe what we are doing
 echo "Searching for DSpace '$param' events" >&2
-[ "$msg" ] && echo "$msg" >&2
+[ "$files_msg" ] && echo "$files_msg" >&2
 echo "---" >&2
 
 # Process the param
