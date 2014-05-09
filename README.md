@@ -8,6 +8,14 @@ A set of useful utilities for DSpace.
 - *user_activity.sh* extracts user event information (ie. login, failed_login
   and autoregister) from one or more dspace.log.YYYY-MM-DD log files.
 
+- *user_cleanup_info.sh* extracts DSpace user information including:
+  * number of submitted items
+  * number of epersongroups for which eperson is a member
+  * list of epersongroups for which eperson is a member
+  * number of collections to which the eperson is subscribed
+  * list of collections to which the eperson is subscribed
+
+
 Application environment
 -----------------------
 Read the INSTALL file.
