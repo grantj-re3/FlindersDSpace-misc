@@ -1,0 +1,82 @@
+1. APPLICATION ENVIRONMENT
+
+- GNU bash, version 4.1.2(1)-release (x86_64-redhat-linux-gnu)
+- Red Hat Enterprise Linux Server release 6.5 (Santiago)
+- 2.6.32-431.el6.x86_64 #1 SMP Sun Nov 10 22:19:54 EST 2013 x86_64 x86_64 x86_64 GNU/Linux
+- DSpace 3.x
+
+Although this software has not been designed to run under the Microsoft
+Windows operating system, it may be feasible as follows.
+ - Install Cygwin (see http://www.cygwin.com) then run bash scripts
+   under that environment.
+
+
+2. INSTALLATION
+
+
+2.1 WARNING
+
+- Exposing user details to the internet or even a wide community within
+  your work place is not recommended. It is recommended that the audience
+  for such output be kept very narrow (eg. those directly involved with
+  a DSpace user cleanup).
+  
+
+2.2 ASSUMPTIONS
+
+- That you have a basic understanding of Linux/Unix, bash (or sh or
+  ksh) shell scripts.
+- That you are using a Linux, Unix or Unix-like environment similar to that
+  described under APPLICATION ENVIRONMENT.
+- You have DSpace installed as given under APPLICATION ENVIRONMENT.
+- You run scripts in a test environment in order to understand behaviour
+  before running in a production environment.
+
+
+2.3 INSTRUCTIONS
+
+- Download from github
+- Checkout latest version/tag if applicable
+- Update config for your site.
+- Run scripts as required.
+
+
+3. EXAMPLE
+
+
+The purpose of this example is to:
+- show how to install, configure and run this application
+- show how to build the resulting structure in DSpace
+
+
+Scenario:
+
+- You have a test environment to experiment with this app.
+- You are happy with the constant declarations at the top of file:
+  * bin/user_activity.sh
+- This application to be installed in $HOME/opt/ds_misc of an
+  unprivileged user.
+
+
+Instructions:
+
+mkdir ~/opt
+git clone https://github.com/grantj-re3/FlindersDSpace-misc.git ~/opt/ds_misc
+cd ~/opt/ds_misc
+
+# If you want a particular version
+git tag # List tagged releases
+git checkout ... # Checkout the desired release
+
+# Read files INSTALL LICENSE README*
+
+
+# Update config for your site, ie. the constant declarations at the top of file
+bin/user_activity.sh. Eg. Variables:
+  * PATH
+  * ds_log_path
+
+# Run the program as described in the "Example usage" section in README.md.
+
+# Celebrate!
+
