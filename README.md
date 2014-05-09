@@ -3,7 +3,6 @@ FlindersDSpace-misc
 
 Description
 -----------
-123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789
 A set of useful utilities for DSpace.
 
 - *user_activity.sh* extracts user event information (ie. login, failed_login
