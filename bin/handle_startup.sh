@@ -42,7 +42,6 @@ echo "Searching for DSpace handle.net startup events" >&2
 [ "$files_msg" ] && echo "$files_msg" >&2
 echo "---" >&2
 
-#grep -h " @ Loading " $files |sort
 matching_lines=`grep -h " @ Loading " $files`
 
 if [ $? = 0 -o $? = 1 ]; then
