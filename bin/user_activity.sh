@@ -1,7 +1,11 @@
 #!/bin/sh
 # user_activity.sh
 #
-# Copyright (c) 2013, Flinders University, South Australia. All rights reserved.
+# Show one of the specified events: login, failed_login and autoregister.
+# A logout event might also be useful but our default user interface XMLUI
+# does not seem to log such events for DSpace 3.x (although the JSPUI does).
+#
+# Copyright (c) 2014, Flinders University, South Australia. All rights reserved.
 # Contributors: eResearch@Flinders, Library, Information Services, Flinders University.
 # See the accompanying LICENSE file (or http://opensource.org/licenses/BSD-3-Clause).
 # 
