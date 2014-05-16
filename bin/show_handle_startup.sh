@@ -1,5 +1,4 @@
 #!/bin/sh
-# handle_startup.sh
 #
 # Copyright (c) 2014, Flinders University, South Australia. All rights reserved.
 # Contributors: eResearch@Flinders, Library, Information Services, Flinders University.

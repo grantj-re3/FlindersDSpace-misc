@@ -5,6 +5,9 @@ Description
 -----------
 A set of useful utilities for DSpace.
 
+- *show_handle_startup.sh* shows DSpace handle.net startup events,
+  in particular the config file read by the handle server
+
 - *user_activity.sh* extracts user event information (ie. login, failed_login
   and autoregister) from one or more dspace.log.YYYY-MM-DD log files.
 
@@ -14,7 +17,6 @@ A set of useful utilities for DSpace.
   * list of epersongroups for which eperson is a member
   * number of collections to which the eperson is subscribed
   * list of collections to which the eperson is subscribed
-
 
 Application environment
 -----------------------
