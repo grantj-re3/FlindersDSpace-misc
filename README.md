@@ -5,8 +5,13 @@ Description
 -----------
 A set of useful utilities for DSpace.
 
-- *show_handle_startup.sh* shows DSpace handle.net startup events,
-  in particular the config file read by the handle server
+- *show_handle_start.sh* shows DSpace handle.net startup events,
+  in particular the config file read by the handle server.
+  * Takes zero or more handle-plugin.log files as parameters.
+
+- *show_tomcat_start.sh* shows DSpace tomcat startup events.
+  * Takes zero or more catalina.out files as parameters.
+  * File parameters can be all plain text files or all gzipped files.
 
 - *user_activity.sh* extracts user event information (ie. login, failed_login
   and autoregister) from one or more dspace.log.YYYY-MM-DD log files.
