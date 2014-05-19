@@ -5,6 +5,9 @@ Description
 -----------
 A set of useful utilities for DSpace.
 
+- *dc_relation.sh* extracts all DSpace items containing dc.relation
+  *or* dc.relation.uri fields (depending on configuration).
+
 - *show_handle_start.sh* shows DSpace handle.net startup events,
   in particular the config file read by the handle server.
   * Takes zero or more handle-plugin.log files as parameters.
