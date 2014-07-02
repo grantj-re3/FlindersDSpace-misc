@@ -20,6 +20,9 @@ A set of useful utilities for DSpace.
   * Takes zero or more catalina.out files as parameters.
   * File parameters can be all plain text files or all gzipped files.
 
+- *show_version.sh* shows the version of DSpace which generated the
+  web page at the specified URL.
+
 - *user_activity.sh* extracts user event information (ie. login, failed_login
   and autoregister) from one or more dspace.log.YYYY-MM-DD log files.
 
