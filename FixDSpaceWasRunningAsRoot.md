@@ -1,5 +1,13 @@
-Fixes to apply if DSpace was running as root
-============================================
+# Fixes to apply if DSpace was running as root
+
+## DISCLAIMER
+
+These instructions have been written after the event and may lack
+accuracy. They are expected to be a guide only. You are expected
+to understand the consequences of any Linux commands which you
+invoke. ___Use at your own risk.___
+
+## Guidelines
 
 If the DSpace web app (ie. java tomcat) is started as the root user by
 mistake, then started later as the unprivileged DSPACE_OWNER, you are
