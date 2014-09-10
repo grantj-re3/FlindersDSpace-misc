@@ -17,7 +17,7 @@ collection_hdl="123456789/6071"
 # favourite spreadsheet app.
 sql="
 select
-  (select handle from handle where resource_type_id=2 and resource_id=i.item_id) handle,
+  (select 'http://hdl.handle.net/'||handle from handle where resource_type_id=2 and resource_id=i.item_id) handle,
   (
     select text_value from metadatavalue where item_id=i.item_id and metadata_field_id =
       (select metadata_field_id from metadatafieldregistry where element='identifier' and qualifier is null)
