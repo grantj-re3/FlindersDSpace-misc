@@ -1,5 +1,5 @@
 #!/bin/sh
-# Usage: nla_unmatched.sh
+# Usage: url_timout.sh
 #
 # Copyright (c) 2014, Flinders University, South Australia. All rights reserved.
 # Contributors: eResearch@Flinders, Library, Information Services, Flinders University.
