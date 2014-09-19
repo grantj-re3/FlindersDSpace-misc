@@ -24,8 +24,15 @@ email_subject="URL lookup failure(s) on $datestamp"
 # - Description of URL being fetched
 config_url="
 	20	http://hdl.handle.net/xxxx/yyyyy	DSpace production handle
-	20	http://my.dspace.site/xmlui/		DSpace production handle
+	20	http://my.dspace.site/xmlui/		DSpace home page
 "
+
+##############################################################################
+# Increment the integer argument. Return via the count variable.
+# (Workaround to avoid backticks within a backtick-block for sh compatibility)
+increment_count() {
+  count=`expr $1 + 1`
+}
 
 ##############################################################################
 fail_msg=`
@@ -39,7 +46,7 @@ fail_msg=`
       eval $cmd
 
       if [ $? != 0 ]; then
-        let count=$count+1
+        increment_count $count
         echo -e "[$count] URL lookup failure for $desc\n - URL used was $url\n - no response received in $timeout seconds\n"
       fi
     done
