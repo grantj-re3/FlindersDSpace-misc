@@ -113,7 +113,10 @@ The items have the characteristics that they are:
 - have not been withdrawn; and
 - are owned by a valid collection (sanity check)
 
-If a single items contains several bitstreams (ie. works) the item
+Mapped versions of an item are not counted (only the 'concrete' item
+is counted).
+
+If a single item contains several bitstreams (ie. works) the item
 is only counted once.
 
 If one bitstream is embargoed then the item is considered to be embargoed.
