@@ -96,7 +96,7 @@ select
   (select count(*) from published_items where item_id not in
     (select item_id from bitstream_items)
   ) icount_4_notbitstream_total,
-  (select count(*) from published_items) icount_7,
+  (select count(*) from published_items) icount_7_total,
 
   to_char(now(), 'YYYY-MM-DD HH24:MI:SS') now,
   (case '$collection_hdl'
@@ -142,7 +142,7 @@ Column names are defined as follows:
     counts 1 and 2).
   icount_4_notbitstream_total:
     Total count of published metadata-only items (ie. not having bitstreams).
-  icount_7:
+  icount_7_total:
     Total count of published items (ie. the sum of counts 3 and 4).
   now:
     The time this query was run.
