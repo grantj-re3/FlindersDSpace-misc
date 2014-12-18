@@ -64,7 +64,7 @@ with
     select distinct item_id from item2bundle where bundle_id in
       (select bundle_id from bundle where name='ORIGINAL' and bundle_id in
         (select bundle_id from bundle2bitstream where bitstream_id in
-          (select bitstream_id from bitstream where deleted<>'t' and source is not null and bitstream_id in
+          (select bitstream_id from bitstream where deleted<>'t' and bitstream_id in
             (select resource_id from resourcepolicy where resource_type_id=0 and start_date > 'now')
           )
         )
@@ -74,7 +74,7 @@ with
     select distinct item_id from item2bundle where bundle_id in
       (select bundle_id from bundle where name='ORIGINAL' and bundle_id in
         (select bundle_id from bundle2bitstream where bitstream_id in
-          (select bitstream_id from bitstream where deleted<>'t' and source is not null
+          (select bitstream_id from bitstream where deleted<>'t'
           )
         )
       )
