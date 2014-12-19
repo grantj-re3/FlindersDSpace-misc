@@ -5,12 +5,32 @@ Description
 -----------
 A set of useful utilities for DSpace.
 
+- *caul_stats.sh* extracts DSpace item-counts for CAUL institutional
+  repository statistics. CAUL is the Council of Australian University
+  Librarians.  This query should be run on DSpace v3.0 or newer
+  (where embargo is defined by resourcepolicy.start_date > 'now').
+
+
 - *dc_relation.sh* extracts all DSpace items containing dc.relation
   *or* dc.relation.uri fields (depending on configuration).
 
 - *dc_relation_nhmrc.sh* extracts items from the NHMRC collection
   containing dc.relation *or* dc.relation.uri fields (depending on
   configuration).
+
+- *df_check.sh* issues a warning if any mount point exceeds its
+  specified percent-full threshold.
+
+- *extractItemsByColl_HdlId.sh* shows the handle and identifier of
+  every item in the specified collection. The output of this query
+  can be used to load DSpace handle info back into the original
+  (Filemaker) database.
+
+- *group_auths.sh* extracts authorisations against the specified
+  group including:
+  * resource type (eg. ITEM, COLLECTION, COMMUNITY)
+  * resource name for some resource types
+  * action name (eg. READ, WRITE, ADD)
 
 - *show_handle_start.sh* shows DSpace handle.net startup events,
   in particular the config file read by the handle server.
@@ -22,6 +42,10 @@ A set of useful utilities for DSpace.
 
 - *show_version.sh* shows the version of DSpace which generated the
   web page at the specified URL.
+
+- *url_timout.sh* attempts to access a list of URLs. It sends a
+  failure notification email if any accesses fail, otherwise no
+  email is sent.
 
 - *user_activity.sh* extracts user event information (ie. login, failed_login
   and autoregister) from one or more dspace.log.YYYY-MM-DD log files.
