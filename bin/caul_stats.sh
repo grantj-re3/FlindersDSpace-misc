@@ -46,7 +46,7 @@ usage_exit() {
 [ "$1" = -h -o "$1" = --help ] && usage_exit
 
 if [ "$1" = "" ]; then
-  year=`date -d "$num_days_ago days ago" +%Y`			# Default to this year
+  year=`date -d "$num_days_ago days ago" +%Y`
 else
   year="$1"
 fi
