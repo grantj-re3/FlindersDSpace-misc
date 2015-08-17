@@ -4,7 +4,7 @@
 # Usage 1: df_check.sh			# Display result to STDOUT
 # Usage 2: df_check.sh --email|-e	# Send email if result is not empty
 #
-# Copyright (c) 2014, Flinders University, South Australia. All rights reserved.
+# Copyright (c) 2015, Flinders University, South Australia. All rights reserved.
 # Contributors: Library, Information Services, Flinders University.
 # See the accompanying LICENSE file (or http://opensource.org/licenses/BSD-3-Clause).
 #
@@ -39,9 +39,10 @@ percent_full_indiv_threshold="
 #   Remove '%' symbol
 #   Join line if mount point is on 1st line & df-info on next line
 #   While(read pct mountpt) {
-#     threshold = Value from above config
+#     threshold = Value from above config (or else the default threshold)
 #     Display warning if(pct > threshold)
 #   }
+##############################################################################
 show_if_mountpt_too_full() {
 df -m |
   tr -d % |
