@@ -44,10 +44,10 @@ percent_full_indiv_threshold="
 #   }
 ##############################################################################
 show_if_mountpt_too_full() {
-df -m |
+df -h |
   tr -d % |
   awk 'NR>1 && NF==6 {print} NR>1 && NF==5 {print p $0} {p=$0}' |
-    while read device f2 f3 f4 pct mountpt; do
+    while read device f2 f3 avail pct mountpt; do
       threshold=`echo "$percent_full_indiv_threshold" |
         egrep -v "^[[:space:]]*#" |
         awk -v mountpt="$mountpt" '$1==mountpt {print $2}'`
@@ -55,7 +55,7 @@ df -m |
       # Use the default threshold if no individual threshold found
       [ "$threshold" = "" ] && threshold=$PERCENT_FULL_DEFAULT_THRESHOLD
 
-      [ "$pct" -gt "$threshold" ] && echo "WARNING: $mountpt is $pct% full"
+      [ "$pct" -gt "$threshold" ] && echo "WARNING: $mountpt is $pct% full ($avail available)"
     done
 }
 
