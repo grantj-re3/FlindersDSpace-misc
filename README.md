@@ -32,6 +32,8 @@ A set of useful utilities for DSpace.
   * resource name for some resource types
   * action name (eg. READ, WRITE, ADD)
 
+- *show_bitstream_formats.sh* shows known bitstream formats.
+
 - *show_handle_start.sh* shows DSpace handle.net startup events,
   in particular the config file read by the handle server.
   * Takes zero or more handle-plugin.log files as parameters.
@@ -56,6 +58,15 @@ A set of useful utilities for DSpace.
   * list of epersongroups for which eperson is a member
   * number of collections to which the eperson is subscribed
   * list of collections to which the eperson is subscribed
+
+- *user_subscription_info.sh* extracts DSpace subscription info including:
+  * email address of eperson
+  * whether the eperson can login
+  * handle of the collection (because collections can have identical names
+    and the eperson subscription list in the GUI does not distinguish
+    between them)
+  * handle of the collection (because the eperson subscription-list in the
+    GUI does not distinguish between collections with identical names)
 
 Application environment
 -----------------------
