@@ -45,7 +45,8 @@ with
 descr="Extract subscription info including:
 - email address of eperson
 - whether the eperson can login
-- handle of the collection (because several collections have identical names)
+- handle of the collection (because the eperson subscription-list in the
+  GUI does not distinguish between collections with identical names)
 "
 
 ##############################################################################

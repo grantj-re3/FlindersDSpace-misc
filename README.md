@@ -62,9 +62,6 @@ A set of useful utilities for DSpace.
 - *user_subscription_info.sh* extracts DSpace subscription info including:
   * email address of eperson
   * whether the eperson can login
-  * handle of the collection (because collections can have identical names
-    and the eperson subscription list in the GUI does not distinguish
-    between them)
   * handle of the collection (because the eperson subscription-list in the
     GUI does not distinguish between collections with identical names)
 
