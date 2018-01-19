@@ -1,0 +1,15 @@
+# psql_connect_env.sh
+#
+# Copyright (c) 2018, Flinders University, South Australia. All rights reserved.
+# Contributors: Library, Corporate Services, Flinders University.
+# See the accompanying LICENSE file (or http://opensource.org/licenses/BSD-3-Clause).
+#
+# Common script sourced by all DSpace database scripts in this directory.
+# Sets the psql_connect_opts variable.
+##############################################################################
+
+user=$USER	# CUSTOMISE: Database user: Assume same name as the Unix user
+db=dspace	# CUSTOMISE: Database name
+rhost="dspace-db.example.com"			# CUSTOMISE: Database remotehost
+psql_connect_opts="-h $rhost -U $user -d $db"	# CUSTOMISE: Connect options
+

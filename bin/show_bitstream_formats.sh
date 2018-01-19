@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2016, Flinders University, South Australia. All rights reserved.
+# Copyright (c) 2016-2018, Flinders University, South Australia. All rights reserved.
 # Contributors: Library, Corporate Services, Flinders University.
 # See the accompanying LICENSE file (or http://opensource.org/licenses/BSD-3-Clause).
 # 
@@ -8,9 +8,17 @@
 # http://my_dspace_server/xmlui > Login > Registries: Format
 # 
 ##############################################################################
-user=$USER	# Database user: Assume same name as the Unix user
-db=dspace	# Database name
+user=$USER	# CUSTOMISE: Database user: Assume same name as the Unix user
+db=dspace	# CUSTOMISE: Database name
+rhost="dspace-db.example.com"			# CUSTOMISE: Database remotehost
+psql_connect_opts="-h $rhost -U $user -d $db"	# CUSTOMISE: Connect options
 
+##############################################################################
+# Optionally override the above psql_connect_opts variable.
+psql_env_fname=`dirname $0`/psql_connect_env.sh	# Path to environment-file
+[ -f $psql_env_fname ] && . $psql_env_fname
+
+##############################################################################
 # The meaning of support levels are derived from
 # https://github.com/DSpace/DSpace/blob/master/dspace-api/src/main/java/org/dspace/content/BitstreamFormat.java
 
@@ -49,10 +57,7 @@ with
     header
     force quote \\\"Extensions\\\"
 "
-
-  psql_opts="-U $user -d $db -A -c \"$query\""
-  cmd="psql $psql_opts"
-
+  cmd="psql $psql_connect_opts -A -c \"$query\""
   cat <<-EOF_CSV
 
 		DESCRIPTION: $descr
@@ -66,10 +71,7 @@ with
 ##############################################################################
 show_html() {
   query="$sql"
-
-  psql_opts="-U $user -d $db -H -c \"$query\""
-  cmd="psql $psql_opts"
-
+  cmd="psql $psql_connect_opts -H -c \"$query\""
   cat <<-EOF_HTML
 
 		DESCRIPTION: $descr
