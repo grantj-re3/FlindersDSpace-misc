@@ -1,8 +1,8 @@
 #!/bin/sh
 # Usage: url_timout.sh
 #
-# Copyright (c) 2014, Flinders University, South Australia. All rights reserved.
-# Contributors: eResearch@Flinders, Library, Information Services, Flinders University.
+# Copyright (c) 2014-2018, Flinders University, South Australia. All rights reserved.
+# Contributors: Library, Corporate Services, Flinders University.
 # See the accompanying LICENSE file (or http://opensource.org/licenses/BSD-3-Clause).
 #
 ##############################################################################
@@ -14,11 +14,14 @@
 PATH=/bin:/usr/bin;	export PATH
 datestamp=`date "+%a %F %H:%M"`
 
-# mailx: Space separated list of destination email addresses
+app_dir_temp=`dirname "$0"`		# Might be relative (eg "." or "..") or absolute
+etc_dir=`cd "$app_dir_temp/../etc" ; pwd`	# Absolute path of etc dir
+
+# CUSTOMISE: Space separated list of (mailx) destination email addresses
 email_dest_list="me@example.com you@example.com"
 email_subject="URL lookup failure(s) on $datestamp"
 
-# Config below consists of 3 fields separated by white-space
+# CUSTOMISE: Config below consists of 3 fields separated by white-space
 # - Time limit (seconds)
 # - URL
 # - Description of URL being fetched
@@ -26,6 +29,13 @@ config_url="
 	20	http://hdl.handle.net/xxxx/yyyyy	DSpace production handle
 	20	http://my.dspace.site/xmlui/		DSpace home page
 "
+
+wget_cli="wget -q"	# CUSTOMISE: CLI including common switches for this app
+
+##############################################################################
+# Optionally override any of the above variables.
+env_fname="$etc_dir/`basename $0 |sed 's/\.sh$/_env.sh/'`"	# Path to THIS_env.sh
+[ -f $env_fname ] && . $env_fname
 
 ##############################################################################
 # Increment the integer argument. Return via the count variable.
@@ -41,7 +51,7 @@ fail_msg=`
     while read timeout url desc; do
       [ "$timeout" = "" ] && continue 
 
-      cmd="wget -q -O/dev/null -t1 -T$timeout \"$url\""
+      cmd="$wget_cli -O/dev/null -t1 -T$timeout \"$url\""
       #echo "CMD: $cmd" >&2
       eval $cmd
 
