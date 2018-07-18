@@ -10,6 +10,17 @@ A set of useful utilities for DSpace.
   Librarians.  This query should be run on DSpace v3.0 or newer
   (where embargo is defined by resourcepolicy.start_date > 'now').
 
+- *checker_wrap.sh* does the following.
+  * Ensures that checker-emailer reports are not run until *after*
+    the checker job has successfully completed.
+  * There appears to be a bug in DSpace v5.6 (and perhaps other
+    versions) where if you run say "dspace checker-emailer -c -m"
+    and there is a checksum problem but not missing-bitstream problem,
+    then no email report will be sent! Hence this script invokes
+    checker-emailer reports as *separate* commands.
+  * Sends an email confirmation regarding all the checker and
+    checker-emailer jobs which have been run (so we can see the
+    difference between *nothing to report* vs *checker was not run*).
 
 - *dc_relation.sh* extracts all DSpace items containing dc.relation
   *or* dc.relation.uri fields (depending on configuration).
