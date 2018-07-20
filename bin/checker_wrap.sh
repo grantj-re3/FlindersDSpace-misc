@@ -40,7 +40,7 @@ cmd_m="$DSPACE_PATH   checker-emailer -m"	# Missing-report
 cmd_a="$DSPACE_PATH   checker-emailer -a"	# All-reports
 
 # Return code message strings
-S_SUCCESS="Success"
+S_SUCCESS="SuccessfullyCompleted"
 S_FAILURE="FailErrorCode:"
 S_NOT_RUN="DidNotRun"
 
@@ -111,9 +111,15 @@ do_checksum_check() {
   }
 
   # Report the status of all DSpace commands above
-  echo
-  echo "--"
-  echo "SHOW SUCCESS AND FAILURE OF DSPACE CHECKSUM-VERIFICATION"
+  cat <<-EOF
+
+	--
+	SHOW IF DSPACE CHECKSUM-CHECKER APPS SUCCESSFULLY *COMPLETED* OR NOT
+
+	IMPORTANT: Successful completion means the program ran ok, but does not
+	indicate whether or not it found problems. You *must* still read any email
+	Checksum-Checker reports which you receive to identify problems.
+	EOF
 
   echo "$RESULTS_CONF" |
     while read suffix label; do
