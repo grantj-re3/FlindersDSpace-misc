@@ -43,6 +43,9 @@ A set of useful utilities for DSpace.
   * resource name for some resource types
   * action name (eg. READ, WRITE, ADD)
 
+- *show_all_metadata.sh* shows all values of the metadata field
+  specified on the command line (eg. dc.contributor.advisor).
+
 - *show_bitstream_formats.sh* shows known bitstream formats.
 
 - *show_handle_start.sh* shows DSpace handle.net startup events,
