@@ -1,14 +1,33 @@
 #!/bin/sh
 #
-# Copyright (c) 2014, Flinders University, South Australia. All rights reserved.
-# Contributors: eResearch@Flinders, Library, Information Services, Flinders University.
+# Copyright (c) 2014-2018, Flinders University, South Australia. All rights reserved.
+# Contributors: Library, Corporate Services, Flinders University.
 # See the accompanying LICENSE file (or http://opensource.org/licenses/BSD-3-Clause).
 # 
+# Modified for DSpace 5+ database metadata as described at
+# https://wiki.duraspace.org/display/DSPACE/Metadata+for+all+DSpace+objects
+# 
 ##############################################################################
-user=$USER	# Database user: Assume same name as the Unix user
-db=dspace	# Database name
-only_show_users_who_can_login=0	# 0=Show all users; 1=Only show users who can login
+PATH=/bin:/usr/bin:/usr/local/bin;	export PATH
 
+user=$USER	# CUSTOMISE: Database user: Assume same name as the Unix user
+db=dspace	# CUSTOMISE: Database name
+rhost="dspace-db.example.com"			# CUSTOMISE: Database remotehost
+psql_connect_opts="-h $rhost -U $user -d $db"	# CUSTOMISE: Connect options
+
+##############################################################################
+# Optionally override the above psql_connect_opts variable.
+psql_env_fname=`dirname $0`/psql_connect_env.sh	# Path to environment-file
+[ -f $psql_env_fname ] && . $psql_env_fname
+
+##############################################################################
+# DSpace resource_type_id
+# See https://github.com/DSpace/DSpace/blob/master/dspace-api/src/main/java/org/dspace/core/Constants.java
+TYPE_COLLECTION=3
+TYPE_GROUP=6
+
+##############################################################################
+only_show_users_who_can_login=0	# 0=Show all users; 1=Only show users who can login
 if [ $only_show_users_who_can_login = 0 ]; then
   where_clause=""
 else
@@ -16,10 +35,61 @@ else
   where_clause="where e.can_log_in<>'f' or e.can_log_in is null"
 fi
 
+##############################################################################
 # Queries for 'num_groups' and 'num_subs' could be simplified but I
 # think it easier to understand if I replace 'name' with 'count(*)'
 # in the queries for 'groups' and 'subscriptions' respectively.
 sql="
+with
+  eperson_meta as (
+    select
+      mv_f.resource_id,
+      mv_f.text_value firstname,
+      mv_l.text_value lastname
+    from
+      metadataschemaregistry ms,
+      metadatafieldregistry mf_f, metadatavalue mv_f,
+      metadatafieldregistry mf_l, metadatavalue mv_l
+    where
+      ms.short_id='eperson' and mv_f.resource_id=mv_l.resource_id and mv_f.resource_type_id=mv_l.resource_type_id and
+      ms.metadata_schema_id=mf_f.metadata_schema_id and mf_f.metadata_field_id=mv_f.metadata_field_id and mf_f.element='firstname' and
+      ms.metadata_schema_id=mf_l.metadata_schema_id and mf_l.metadata_field_id=mv_l.metadata_field_id and mf_l.element='lastname'
+  ),
+
+  group_meta as (
+    select
+      resource_id,
+      text_value title
+    from metadatavalue
+    where resource_type_id=$TYPE_GROUP and
+      metadata_field_id = (
+        select mf.metadata_field_id
+        from metadataschemaregistry ms, metadatafieldregistry mf
+        where
+          ms.metadata_schema_id=mf.metadata_schema_id and
+          ms.short_id='dc' and
+          mf.element='title' and
+          mf.qualifier is null
+    )
+  ),
+
+  collection_meta as (
+    select
+      resource_id,
+      text_value title
+    from metadatavalue
+    where resource_type_id=$TYPE_COLLECTION and
+      metadata_field_id = (
+        select mf.metadata_field_id
+        from metadataschemaregistry ms, metadatafieldregistry mf
+        where
+          ms.metadata_schema_id=mf.metadata_schema_id and
+          ms.short_id='dc' and
+          mf.element='title' and
+          mf.qualifier is null
+    )
+  )
+
 select
   e.email,
   e.can_log_in,
@@ -31,8 +101,8 @@ select
     else 'short_pwh'
   end) pw_hash,
   (select count(*) from item where submitter_id=e.eperson_id) num_items,
-  e.firstname,
-  e.lastname,
+  (select firstname from eperson_meta where resource_id=e.eperson_id) firstname,
+  (select lastname  from eperson_meta where resource_id=e.eperson_id) lastname,
   (select count(*) from epersongroup where eperson_group_id in
     (select eperson_group_id from epersongroup2eperson where eperson_id=e.eperson_id)
   ) num_groups,
@@ -40,12 +110,14 @@ select
     (select collection_id from subscription where eperson_id = e.eperson_id)
   ) num_subs,
   array_to_string(array(
-    select name from epersongroup where eperson_group_id in
+    select gm.title from epersongroup g, group_meta gm
+    where g.eperson_group_id=gm.resource_id and eperson_group_id in
       (select eperson_group_id from epersongroup2eperson where eperson_id=e.eperson_id)
-    order by name
+    order by 1
   ), '||') groups,
   array_to_string(array(
-    select name from collection where collection_id in
+    select cm.title from collection c, collection_meta cm
+    where c.collection_id=cm.resource_id and collection_id in
       (select collection_id from subscription where eperson_id = e.eperson_id)
   ), '||') subscriptions
 from eperson e
@@ -73,9 +145,7 @@ descr="Extract eperson info including:
 "
 
 ##############################################################################
-psql_opts="-U $user -d $db -A -c \"$query\""
-cmd="psql $psql_opts"
-
+cmd="psql $psql_connect_opts -A -c \"$query\""
 cat <<-EOF
 
 	DESCRIPTION: $descr
