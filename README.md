@@ -48,6 +48,14 @@ A set of useful utilities for DSpace.
 
 - *show_bitstream_formats.sh* shows known bitstream formats.
 
+- *show_deleted_bitstream_info.sh* attempts to show
+  bundle_id and item_id associated with a deleted bitstream.
+  It does this by examining the specified DSpace logs since
+  this info is typically gone from the database once the
+  bitstream has been deleted. This script might be helpful
+  when investigating an email attachment from a "Checksum
+  checker Report".
+
 - *show_handle_start.sh* shows DSpace handle.net startup events,
   in particular the config file read by the handle server.
   * Takes zero or more handle-plugin.log files as parameters.
