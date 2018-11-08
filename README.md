@@ -10,6 +10,10 @@ A set of useful utilities for DSpace.
   Librarians.  This query should be run on DSpace v3.0 or newer
   (where embargo is defined by resourcepolicy.start_date > 'now').
 
+- *check_net_connections.sh* counts the (java) network connections
+  from localhost to a remote DSpace database. The results are
+  displayed on stdout or sent via email.
+
 - *checker_wrap.sh* does the following.
   * Ensures that checker-emailer reports are not run until *after*
     the checker job has successfully completed.
