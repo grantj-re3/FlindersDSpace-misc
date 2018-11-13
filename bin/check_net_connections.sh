@@ -28,8 +28,10 @@ PATH=/bin:/usr/bin:/usr/local/bin; export PATH
 USER=`id -un`
 DSPACE_NET_COUNT_MAX=65		# Warn if $net_conn_total exceeds this
 
-HDL_NET_COUNT=27		# CUSTOMISE: The handle DB *is* the DSpace DB
+THIS_NET_COUNT=55		# CUSTOMISE
+HDL_NET_COUNT=3			# CUSTOMISE: The handle DB *is* the DSpace DB
 ERA_NET_COUNT=9			# CUSTOMISE
+DB_NET_COUNT=`expr $THIS_NET_COUNT + $HDL_NET_COUNT + $ERA_NET_COUNT`
 
 REMOTE_IP=1.2.3.4		# CUSTOMISE: Remote DB IP address
 
@@ -73,7 +75,7 @@ getNetConnectionsTotal() {
   net_conn_warn=""
   net_conn_subject_warn=""
   [ $net_conn_total -gt $DSPACE_NET_COUNT_MAX ] && {
-    net_conn_warn="WARNING: Total connections exceeds $DSPACE_NET_COUNT_MAX"
+    net_conn_warn="WARNING: Total DSpaceApp connections exceeds $DSPACE_NET_COUNT_MAX"
     net_conn_subject_warn="WARNING: "
   }
 }
@@ -84,8 +86,8 @@ reportConnections() {
   [ "$1" = --email -o "$1" = -e ] && email_addendum="This is an automated message, please do not reply."
 
   cat <<-EOF
-	1/ The number of network database connections by '$USER' is:
-	     $net_conn_total
+	1/ The number of network DSpaceApp database connections by '$USER' is:
+	     $net_conn_total  ($THIS_NET_COUNT expected)
 
 	$net_conn_warn
 
@@ -106,13 +108,18 @@ reportConnections() {
 	- The second value is the Process ID of the java app
 
 
-	Notes:
-	- 55 total DSpace database connections is considered ok
-	- 71 total DSpace database connections has caused problems in the past
-	- Above about $DSPACE_NET_COUNT_MAX we may have trouble running new (eg. cron) jobs
-	- Assumes Handle.net database connection count of $HDL_NET_COUNT
-	- Assumes ERA database connection count of $ERA_NET_COUNT
+	DSpace *remote* database-server notes:
+	- Max connections to database-server is 97 (100 less 3 reserved for superuser).
+	- Expected non-cron and non-manual connections to the database-server is:
+	    $DB_NET_COUNT = DSpaceApp($THIS_NET_COUNT) + DSpaceHandle($HDL_NET_COUNT) + DSpaceERA($ERA_NET_COUNT)
+	- We have seen problems in the past when non-cron and non-manual connections to the
+	  database-server reaches 92 (then overnight cron jobs attempted to exceed the 97 limit).
 
+
+	FIX:
+	If network connections are being held open but not used, try restarting:
+	- all DSpace instances which connect to the remote database-server
+	- all DSpace Handle.net services which connect to the remote database-server
 
 	$email_addendum
 EOF
