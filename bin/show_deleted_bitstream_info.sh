@@ -16,6 +16,14 @@
 # - item2bundle
 #
 ##############################################################################
+RHOST="dspace_database_remote_host.example.com"
+DBNAME="dspace"
+PSQL_CMD="psql -h $RHOST -d $DBNAME"
+
+# The DSpace item URL to the left of HANDLE_PREFIX/HANDLE_SUFFIX.
+# Eg1. http://hdl.handle.net/
+# Eg2. https://dspace.example.com/xmlui/handle/
+DSPACE_ITEM_URL_PART1="http://hdl.handle.net/"
 
 ##############################################################################
 usage() {
@@ -56,9 +64,16 @@ show_item_id() {
     exit 4
   }
   echo "### FOUND item_id '$item_id'"
-  echo
-  echo "### The SQL query to find the item-handle (if it exists) is:"
-  echo "  select * from handle where resource_type_id=2 and resource_id=$item_id;"
+}
+
+##############################################################################
+show_url() {
+  item_id="$1"
+  [ "$item_id" ] && {
+    echo
+    sql_res=`$PSQL_CMD -c "select handle,resource_id item_id,'<<url_pt1>>' || handle url from handle where resource_type_id=2 and resource_id=$item_id"`
+    echo "$sql_res" |sed "s~<<url_pt1>>~$DSPACE_ITEM_URL_PART1~"
+  }
 }
 
 ##############################################################################
@@ -74,8 +89,9 @@ if echo "$bitstream_id" |grep -vqP "^\d+$"; then
   usage
 fi
 
-echo "Attempting to find bundle_id and item_id in DSpace logs for:"
+echo "Attempting to find bundle_id, item_id and URL via DSpace logs for:"
 echo "### bitstream_id '$bitstream_id'"
 show_bundle_id  "$bitstream_id"  "$@"
 show_item_id    "$bundle_id"     "$@"
+show_url        "$item_id"
 
