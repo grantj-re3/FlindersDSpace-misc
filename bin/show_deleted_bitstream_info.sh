@@ -55,7 +55,7 @@ show_item_id() {
   shift
 
   echo
-  line_bundle=`egrep ":remove_bundle:item_id=.*bundle_id=$bundle_id\$"  "$@"`
+  line_bundle=`egrep ":(add|remove)_bundle:item_id=.*bundle_id=$bundle_id\$"  "$@" |tail -1`
   echo "$line_bundle"
 
   item_id=`echo "$line_bundle" |sed 's!^.*item_id=!!; s!,.*$!!'`
