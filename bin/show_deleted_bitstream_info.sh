@@ -39,12 +39,30 @@ show_bundle_id() {
 
   echo
   line_bitstr=`egrep ":remove_bitstream:bundle_id=.*,bitstream_id=$bitstream_id\$"  "$@"`
-  echo "$line_bitstr"
+  [ $? = 0 ] && echo "$line_bitstr"
 
   bundle_id=`echo "$line_bitstr" |sed 's!^.*bundle_id=!!; s!,.*$!!'`
   [ -z "$bundle_id" ] && {
-    echo "No associated bundle_id was found!"
-    exit 3
+    lines_update=`egrep ":update_bitstream:bitstream_id=$bitstream_id\$"  "$@"`
+    if [ $? = 0 ]; then
+      echo "$lines_update"
+      echo "# The bitstream was updated (not deleted)."
+      echo
+
+      lines_bitstr=`egrep  "[,:]bitstream_id=72911$"  "$@" |egrep :bundle_id=`
+      if [ $? = 0 ]; then
+        echo "$lines_bitstr" |tail -1
+        bundle_id=`echo "$lines_bitstr" |tail -1 |sed 's!^.*bundle_id=!!; s!,.*$!!'`
+
+      else
+        echo "No associated bundle_id was found in log file! Please try database."
+        exit 2
+      fi
+
+    else
+      echo "No associated bundle_id was found!"
+      exit 3
+    fi
   }
   echo "### FOUND bundle_id '$bundle_id'"
 }
