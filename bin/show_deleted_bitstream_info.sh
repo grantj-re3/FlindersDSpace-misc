@@ -95,10 +95,22 @@ show_url() {
 }
 
 ##############################################################################
+show_message() {
+  cat <<-EOMSG
+	Guidelines:  Only follow up with the user if:
+	- the item is missing
+	- the bitstream is missing
+	- the bitstream title does not match the item title
+
+	EOMSG
+}
+
+##############################################################################
 # Main
 ##############################################################################
 [ "$1" = -h -o "$1" = --help -o "$#" -lt 2 ] && usage
 
+show_message
 bitstream_id="$1"
 shift
 
