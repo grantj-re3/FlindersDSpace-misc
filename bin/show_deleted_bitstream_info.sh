@@ -49,7 +49,7 @@ show_bundle_id() {
       echo "# The bitstream was updated (not deleted)."
       echo
 
-      lines_bitstr=`egrep  "[,:]bitstream_id=72911$"  "$@" |egrep :bundle_id=`
+      lines_bitstr=`egrep  "[,:]bitstream_id=$bitstream_id$"  "$@" |egrep :bundle_id=`
       if [ $? = 0 ]; then
         echo "$lines_bitstr" |tail -1
         bundle_id=`echo "$lines_bitstr" |tail -1 |sed 's!^.*bundle_id=!!; s!,.*$!!'`
