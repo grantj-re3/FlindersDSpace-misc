@@ -61,7 +61,19 @@ show_bundle_id() {
 
     else
       echo "No associated bundle_id was found!"
-      exit 3
+
+      lines_logo=`egrep ":set_logo:.*bitstream_id=$bitstream_id\$"  "$@"`
+      if [ $? = 0 ]; then
+        echo
+        echo "# The bitstream may be a community/collection logo."
+        echo "$lines_logo"
+
+        egrep ":delete_bitstream:bitstream_id=$bitstream_id\$"  "$@"
+        exit 0
+
+      else
+        exit 3
+      fi
     fi
   }
   echo "### FOUND bundle_id '$bundle_id'"
