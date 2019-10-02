@@ -90,8 +90,16 @@ show_item_id() {
 
   item_id=`echo "$line_bundle" |sed 's!^.*item_id=!!; s!,.*$!!'`
   [ -z "$item_id" ] && {
-    echo "No associated item_id was found!"
-    exit 4
+    echo "No item_id found in logs - trying database."
+    item_id=`$PSQL_CMD -qtc "select item_id from item2bundle where bundle_id=$bundle_id" |
+      sed 's/^ *//; s/ *$//'`
+
+    num_lines=`echo "$item_id" |wc -l`	# item_id should be 1 line
+    echo "$item_id" |grep -qP "^\d+$"	# item_id should be an integer
+    [ $? != 0 -o $num_lines != 1 ] && {
+      echo "No associated item_id was found!"
+      exit 4
+    }
   }
   echo "### FOUND item_id '$item_id'"
 }
